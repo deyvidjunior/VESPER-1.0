@@ -138,7 +138,7 @@ function popAt(host,x,y,txt){var p=document.createElement('div');p.className='po
 function startGame(){stopAllGames();go2('game');gameSt={score:0,timer:0,spawnT:0,paused:false,flowers:[],px:CW/2,tL:30};document.getElementById('gEnd').innerHTML='';var cv=document.getElementById('chuvaCv');tpBind(cv);cv.onpointerdown=function(e){var r=cv.getBoundingClientRect();var x=(e.clientX-r.left)*(CW/r.width),y=(e.clientY-r.top)*(CH/r.height);for(var i=0;i<gameSt.flowers.length;i++){var f=gameSt.flowers[i];if(Math.hypot(f.x-x,f.y-y)<40){f.dead=true;catchFlower(cv,f.x,f.y);break}}};fixedLoop(gameSt,stepChuva,renderChuva);updG();}
 function catchFlower(cv,x,y){gameSt.score++;S.hearts++;save();buzz(12);if(cv)popAt(cv,x,y,'+1 💛');updG();}
 function stepChuva(dt){var g=gameSt;g.timer+=dt;var left=Math.max(0,30-Math.floor(g.timer));if(left!==g.tL){g.tL=left;updG()}if(g.timer>=30){endChuva();return}
-g.spawnT+=dt;if(g.spawnT>.7){g.spawnT=0;g.flowers.push({x:30+Math.random()*(CW-60),y:-30,vy:90+Math.random()*60,e:['🌻','🌼','🌸','💛'][Math.floor(Math.random()*4)]})}
+g.spawnT+=dt;if(g.spawnT>.7){g.spawnT=0;g.flowers.push({x:30+Math.random()*(CW-60),y:-30,vy:90+Math.random()*60,e:['🌻','','🌸','💛'][Math.floor(Math.random()*4)]})}
 var d=tpConsume();g.px=Math.max(45,Math.min(CW-45,g.px+d.dx*TP.sens*2.2));
 var PY=CH-42;g.flowers.forEach(function(f){var py=f.y;f.y+=f.vy*dt;if(py<PY&&f.y>=PY&&Math.abs(f.x-g.px)<55){f.dead=true;catchFlower(document.getElementById('chuvaCv'),f.x,PY)}});
 g.flowers=g.flowers.filter(function(f){return !f.dead&&f.y<CH+40});}
