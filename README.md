@@ -1,4 +1,4 @@
-# VESPER-1.0
+
 
 # 🌻 VESPER — "Seu momento. Seu jardim."
 App pessoal de afeto: mensagens diárias, poesias, diário, calendário, 6 jogos e registro.
