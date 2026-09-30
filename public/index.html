@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Vesper 🌻</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="errBanner"></div>
+<div id="topbar">
+  <button class="pill" id="backBtn" onclick="goBack()">←</button>
+  <div class="pill" id="gardenBadge"><span id="themeEmoji">🌸</span><span id="gardenName">Vesper</span></div>
+  <span id="wallet" style="display:none;gap:8px;align-items:center">
+    <div class="pill small">🪙 <span id="coinView">0</span></div>
+    <div class="pill small">💛 <span id="heartView">0</span></div>
+  </span>
+  <button class="pill" id="lockBtn" onclick="lockApp()">🔒</button>
+</div>
+<div id="app">
+
+<section class="screen on" id="s-auth">
+  <div class="card">
+    <div class="logo" id="authLogo">🌻</div>
+    <h1 style="letter-spacing:6px">V E S P E R</h1>
+    <p class="sub"><i>"Seu momento. Seu jardim."</i></p>
+    <div id="authOnboard">
+      <div class="card soft" style="box-shadow:none;text-align:left">
+        <b style="color:#8a3c1a">🌱 Criar meu jardim</b>
+        <p class="sub" style="margin:6px 0">Como quer ser chamada?</p>
+        <input class="txt" id="obNome" placeholder="Seu nome ou apelido">
+        <p class="sub" style="margin:8px 0 4px">Crie uma senha (mín. 4 caracteres)</p>
+        <input class="txt" id="obPass" type="password" placeholder="Senha">
+        <input class="txt" id="obPass2" type="password" placeholder="Repita a senha" style="margin-top:6px">
+        <p class="sub" style="margin:8px 0 4px">Pergunta secreta (pra recuperar senha)</p>
+        <select class="txt" id="obQ">
+          <option value="0">Nome do seu primeiro animal de estimação?</option>
+          <option value="1">Cidade onde você nasceu?</option>
+          <option value="2">Qual seu doce favorito?</option>
+          <option value="3">Nome da sua primeira professora?</option>
+        </select>
+        <input class="txt" id="obA" placeholder="Resposta secreta" style="margin-top:6px">
+        <button class="btn gold" id="obBtn" onclick="createJardim()">🌻 Plantar meu jardim</button>
+        <p class="sub" style="font-size:.75rem">🔐 Tudo fica só neste aparelho. Ninguém mais vê seus dados.</p>
+      </div>
+    </div>
+    <div id="authLogin" style="display:none">
+      <div class="card soft" style="box-shadow:none">
+        <span class="badge-tag">🔒 Jardim protegido</span>
+        <p class="sub" style="margin:8px 0">Digite sua senha pra entrar no seu cantinho.</p>
+        <input class="txt" id="lgPass" type="password" placeholder="Sua senha">
+        <button class="btn gold" onclick="tryLogin()">Entrar no Meu Jardim 🌻</button>
+        <button class="btn ghost" onclick="showAuth('recover')">Esqueci minha senha</button>
+      </div>
+    </div>
+    <div id="authRecover" style="display:none">
+      <div class="card soft" style="box-shadow:none;text-align:left">
+        <b style="color:#8a3c1a">🔑 Recuperar senha</b>
+        <div class="tabs">
+          <button class="chip on" id="rcT-ph" onclick="setRc('ph')">🌻 Frase secreta</button>
+          <button class="chip" id="rcT-q" onclick="setRc('q')">❓ Pergunta</button>
+        </div>
+        <div id="rcPh">
+          <p class="sub" style="margin:6px 0">Digite as 6 palavras da sua frase de recuperação:</p>
+          <textarea class="txt" id="rcPhrase" placeholder="ex.: sol jardim chuva estrela mel rosa"></textarea>
+        </div>
+        <div id="rcQ" style="display:none">
+          <p class="sub" id="rcQText" style="margin:6px 0;font-weight:700"></p>
+          <input class="txt" id="rcAns" placeholder="Sua resposta">
+        </div>
+        <button class="btn gold" onclick="tryRecover()">Verificar 🔑</button>
+        <button class="btn ghost" onclick="showAuth('login')">← Voltar</button>
+      </div>
+    </div>
+    <div id="authNewPass" style="display:none">
+      <div class="card soft" style="box-shadow:none">
+        <span class="badge-tag green">✅ Identidade confirmada!</span>
+        <p class="sub" style="margin:8px 0">Crie sua nova senha:</p>
+        <input class="txt" id="npPass" type="password" placeholder="Nova senha">
+        <input class="txt" id="npPass2" type="password" placeholder="Repita" style="margin-top:6px">
+        <button class="btn gold" onclick="setNewPass()">Salvar nova senha 💾</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="s-message">
+  <div class="card">
+    <span class="badge-tag" id="themeFrase"></span>
+    <h1 id="msgTitle"></h1>
+    <div class="badge-tag" id="bonusPill"></div>
+    <div class="quote-card">
+      <span class="badge-tag" style="background:#fff">❝ Mensagem de Afeto</span>
+      <span class="sub" id="msgEd" style="float:right;font-size:.78rem"></span>
+      <p class="quote" id="msgQuote" style="margin-top:8px"></p>
+      <div style="background:#fff;border-radius:14px;padding:12px;margin-top:10px;text-align:left"><b style="color:#8a3c1a;font-size:.9rem">💡 Reflexão do Dia</b><p class="sub" id="msgReflect" style="margin-top:4px"></p></div>
+    </div>
+    <button class="btn gold" onclick="saveHeart()">🤍 Salvar no Meu Coração 💛</button>
+    <button class="btn pink" onclick="go('words')">✨ Cantinho de Palavras</button>
+    <button class="btn ghost" onclick="openPoems('all')">💝 Jardim de Poesias</button>
+  </div>
+  <div class="foot">Vesper 🌻 • seu cantinho pessoal</div>
+</section>
+
+<section class="screen" id="s-tempo">
+  <div class="card">
+    <h1 id="clock" style="font-size:2.2rem;letter-spacing:2px">00:00:00</h1>
+    <p class="sub" id="dateFull"></p>
+    <p class="sub" id="greet" style="font-weight:700"></p>
+    <span class="badge-tag green" id="countdown"></span>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <button class="btn mini ghost" onclick="calMove(-1)">‹</button>
+      <b id="calTitle" style="color:#8a3c1a"></b>
+      <button class="btn mini ghost" onclick="calMove(1)">›</button>
+    </div>
+    <div id="calGrid"></div>
+    <div id="dayPanel"></div>
+  </div>
+  <div class="card">
+    <b style="color:#8a3c1a">📸 Galeria de Memórias</b>
+    <div id="memGallery"></div>
+    <button class="btn ghost" id="autoThemeBtn" onclick="setManual(null)" style="display:none">↩️ Tema automático</button>
+  </div>
+</section>
+
+<section class="screen" id="s-diary">
+  <div class="card">
+    <span class="badge-tag pink">📝 Meu Diário</span>
+    <input class="txt" id="searchNote" placeholder="🔍 Buscar..." oninput="renderDiary()">
+    <div class="tabs">
+      <button class="chip on" id="dt-all" onclick="setDiaryTab('all')">Todas</button>
+      <button class="chip" id="dt-pin" onclick="setDiaryTab('pin')">📌 Fixadas</button>
+      <button class="chip" id="dt-arc" onclick="setDiaryTab('arc')">🗄️ Arcadas</button>
+    </div>
+    <div id="noteList"></div>
+    <button class="btn gold" onclick="newNote()">✍️ Nova anotação</button>
+  </div>
+</section>
+
+<section class="screen" id="s-note">
+  <div class="card">
+    <span class="badge-tag">✍️ Editando anotação</span>
+    <input type="date" class="txt" id="nData" style="margin:8px 0">
+    <div class="tabs" id="moodPick"></div>
+    <input class="txt" id="nTitulo" placeholder="Título (opcional)" oninput="autoSave()">
+    <textarea class="txt" id="nTexto" placeholder="Escreva com carinho... (salva sozinho)" oninput="autoSave()" style="margin:8px 0"></textarea>
+    <p class="sub" id="saveState" style="font-size:.75rem"></p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
+      <button class="btn mini ghost" id="pinBtn" onclick="togglePin()">📌 Fixar</button>
+      <button class="btn mini ghost" id="arcBtn" onclick="toggleArc()">🗄️ Arcar</button>
+      <button class="btn mini pink" onclick="delNote()">🗑️ Excluir</button>
+    </div>
+    <button class="btn gold" onclick="go('diary')">✅ Concluir</button>
+  </div>
+</section>
+
+<section class="screen" id="s-registro">
+  <div class="card">
+    <span class="badge-tag purple">📊 Meu Registro</span>
+    <div class="stats" id="statGrid"></div>
+    <div class="tabs">
+      <button class="chip on" id="af-all" onclick="setActFilter('all')">Tudo</button>
+      <button class="chip" id="af-vis" onclick="setActFilter('vis')">Visitas</button>
+      <button class="chip" id="af-jog" onclick="setActFilter('jog')">Jogos</button>
+      <button class="chip" id="af-not" onclick="setActFilter('not')">Notas</button>
+      <button class="chip" id="af-poe" onclick="setActFilter('poe')">Poesias</button>
+    </div>
+    <div id="timeline"></div>
+  </div>
+  <div class="card">
+    <b style="color:#8a3c1a">💾 Backup (só seu)</b>
+    <button class="btn green" onclick="exportBackup()">⬇️ Exportar</button>
+    <button class="btn ghost" onclick="document.getElementById('impFile').click()">⬆️ Importar</button>
+    <input type="file" id="impFile" accept=".json" style="display:none" onchange="importBackup(this.files[0])">
+    <button class="btn pink" onclick="wipeAll()">🗑️ Apagar meu jardim</button>
+  </div>
+</section>
+
+<section class="screen" id="s-words">
+  <div class="card">
+    <span class="badge-tag purple">✨ Cantinho de Palavras</span>
+    <div class="tabs">
+      <button class="chip on" id="tab-mot" onclick="setWordTab('mot')">💪 Motivação</button>
+      <button class="chip" id="tab-fra" onclick="setWordTab('fra')">✨ Frases</button>
+      <button class="chip" id="tab-ver" onclick="setWordTab('ver')">🙏 Versículos</button>
+    </div>
+    <div class="quote-card" id="wordCard"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn ghost half" onclick="nextWord()">🔄 Outra</button>
+      <button class="btn gold half" onclick="saveWord()">💛 Guardar</button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="s-arcade">
+  <div class="card">
+    <span class="badge-tag green">🎮 Arcade de Moedas</span>
+    <div class="quote-card"><b style="color:#8a3c1a">🎚️ Sensibilidade do toque</b>
+      <div class="tabs"><button class="chip" id="sn-suave" onclick="setSens('suave')">Suave</button><button class="chip on" id="sn-normal" onclick="setSens('normal')">Normal</button><button class="chip" id="sn-rapido" onclick="setSens('rapido')">Rápido</button></div>
+      <button class="btn mini ghost" id="muteBtn" style="margin-top:6px">🔊 Som: ligado</button>
+    </div>
+    <div class="arcade-card"><b>🎯 Jogo da Mira</b><p>Toque perto do alvo que conta! +1 🪙 / 2 acertos</p><button class="btn purple" onclick="startAim()">Jogar 🎯</button></div>
+    <div class="arcade-card"><b>🐦 Bird das Flores</b><p>Toque pra voar • +2 🪙 por obstáculo</p><button class="btn purple" onclick="startBird()">Jogar 🐦</button></div>
+    <div class="arcade-card"><b>🐍 Cobrita do Jardim</b><p>Arraste pra guiar • +1 🪙 por flor</p><button class="btn purple" onclick="startSnake()">Jogar 🐍</button></div>
+    <div class="arcade-card"><b>🐵 Monito dos Platanitos</b><p>Arraste o dedo pra mover • +1 🪙 / banana</p><button class="btn purple" onclick="startMonkey()">Jogar 🐵</button></div>
+    <div class="arcade-card"><b>🌻 Chuva de Flores</b><p>Arraste a cesta ou toque nas flores • +10 🪙</p><button class="btn purple" onclick="go('game');startGame()">Jogar 🌻</button></div>
+    <div class="arcade-card"><b>🧠 Quiz das Flores</b><p>+5 🪙 por acerto</p><button class="btn purple" onclick="goQuiz()">Jogar 🧠</button></div>
+  </div>
+</section>
+
+<section class="screen" id="s-aim"><div class="card"><h1>🎯 Jogo da Mira</h1><div class="stats"><div class="stat">Tempo<b id="aimTime">20s</b></div><div class="stat">Acertos<b id="aimScore">0</b></div></div><div class="garea" id="aimArea"></div><div id="aimEnd"></div></div></section>
+<section class="screen" id="s-bird"><div class="card"><h1>🐦 Bird das Flores</h1><div class="stats"><div class="stat">Pontos<b id="birdScore">0</b></div></div><canvas id="birdCv" class="game" width="340" height="320"></canvas><p class="sub">Toque pra voar!</p><div id="birdEnd"></div></div></section>
+<section class="screen" id="s-snake"><div class="card"><h1>🐍 Cobrita do Jardim</h1><div class="stats"><div class="stat">Flores<b id="snakeScore">0</b></div></div><canvas id="snakeCv" width="260" height="260"></canvas><p class="sub" style="font-size:.78rem">Arraste no tabuleiro ou use o D-pad</p><div class="dpad"><button onclick="setDir(0,-1)">↑</button><button onclick="setDir(-1,0)">←</button><button onclick="setDir(1,0)">→</button><button onclick="setDir(0,1)">↓</button></div><div id="snakeEnd"></div></div></section>
+<section class="screen" id="s-monkey"><div class="card"><h1>🐵 Monito dos Platanitos</h1><div class="stats"><div class="stat">Tempo<b id="mkTime">25s</b></div><div class="stat">Bananas<b id="mkScore">0</b></div></div><canvas id="mkCv" class="game" width="340" height="320"></canvas><p class="sub" style="font-size:.78rem">Arraste o dedo em qualquer lugar</p><div id="mkEnd"></div></div></section>
+<section class="screen" id="s-game"><div class="card"><h1>🌻 Chuva de Flores</h1><div style="display:flex;justify-content:space-between"><b style="color:#8a3c1a">🌻 <span id="gScore">0/15</span></b><b style="color:#8a3c1a">⏱ <span id="gTime">00:30</span></b></div><div class="bar"><i id="gBar" style="width:0%"></i></div><canvas id="chuvaCv" class="game" width="340" height="320"></canvas><p class="sub" style="font-size:.78rem">Arraste a cesta • toque nas flores</p><button class="btn gold" id="pauseBtn" onclick="togglePause()">⏸ Pausar</button><button class="btn ghost" onclick="startGame()">↺ Reiniciar</button><div id="gEnd"></div></div></section>
+<section class="screen" id="s-quiz"><div class="card"><span class="badge-tag purple">🧠 Quiz das Flores</span><div style="display:flex;justify-content:space-between"><b style="color:#6d28d9" id="quizProg"></b><span class="badge-tag">+5 🪙</span></div><div class="bar"><i id="quizBar" style="width:20%"></i></div></div><div class="card" id="quizCard"></div></section>
+<section class="screen" id="s-poems"><div class="card"><span class="badge-tag pink">💝 Jardim de Poesias</span><div class="quote-card"><b style="color:#8a3c1a">🌻 Tesouro: <span id="poemCount">0/10</span></b><div class="bar"><i id="poemBar" style="width:0%"></i></div></div><div class="tabs"><button class="chip on" id="f-all" onclick="openPoems('all')">Todas</button><button class="chip" id="f-unlocked" onclick="openPoems('unlocked')">Desbloqueadas</button><button class="chip" id="f-locked" onclick="openPoems('locked')">Pra Desbloquear</button></div><div id="poemList"></div></div></section>
+<section class="screen" id="s-poem"><div class="card soft"><span class="badge-tag" style="background:#fff">🌻 POESIA DESBLOQUEADA</span><h1 id="pvTitle"></h1><p class="sub" id="pvDed"></p><div class="verse" id="pvVerse"></div><span class="badge-tag pink" id="pvNum"></span></div><button class="btn gold" onclick="savePoem()">🤍 Guardar </button><button class="btn white" onclick="hearPoem()">🎵 Ouvir</button><button class="btn ghost" onclick="go('poems')">Voltar</button></section>
+
+</div>
+<nav id="bottomNav">
+  <button id="nv-message" onclick="go('message')">🏠<span>Jardim</span></button>
+  <button id="nv-tempo" onclick="go('tempo')">📅<span>Tempo</span></button>
+  <button id="nv-diary" onclick="go('diary')">📝<span>Diário</span></button>
+  <button id="nv-arcade" onclick="go('arcade')">🎮<span>Arcade</span></button>
+  <button id="nv-registro" onclick="go('registro')">📊<span>Registro</span></button>
+</nav>
+<div id="touchRing"></div>
+<div id="toast"></div>
+<div id="phraseModal"><div class="card" style="max-width:360px">
+  <h2>🌻 Sua frase de recuperação</h2>
+  <p class="sub">Guarde estas 6 palavras em lugar seguro. Elas recuperam sua senha sem e-mail nem telefone:</p>
+  <div class="phraseWords" id="phraseWords"></div>
+  <button class="btn mini ghost" onclick="copyPhrase()">📋 Copiar frase</button>
+  <button class="btn gold" onclick="closePhrase()">Guardei! Entrar no jardim 🌻</button>
+</div></div>
+
+<script>
+window.__errs=[];
+window.onerror=function(m){window.__errs.push(m);var b=document.getElementById('errBanner');if(b){b.style.display='block';b.textContent='⚠️ Erro: '+m}};
+window.addEventListener('load',function(){setTimeout(function(){if(typeof window.createJardim!=='function'){var b=document.getElementById('errBanner');b.style.display='block';b.textContent='⚠️ script.js não carregou. Confira se está na mesma pasta. '+(window.__errs.length?('Erros: '+window.__errs.join(' | ')):'');}},900)});
+</script>
+<script src="script.js"></script>
+<script src="config.js"></script>
+<script src="app-db.js"></script>
+</body>
+</html>
