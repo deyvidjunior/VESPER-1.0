@@ -242,8 +242,8 @@ window.__errs=[];
 window.onerror=function(m){window.__errs.push(m);var b=document.getElementById('errBanner');if(b){b.style.display='block';b.textContent='⚠️ Erro: '+m}};
 window.addEventListener('load',function(){setTimeout(function(){if(typeof window.createJardim!=='function'){var b=document.getElementById('errBanner');b.style.display='block';b.textContent='⚠️ script.js não carregou. Confira se está na mesma pasta. '+(window.__errs.length?('Erros: '+window.__errs.join(' | ')):'');}},900)});
 </script>
-<script src="script.js"></script>
-<script src="config.js"></script>
-<script src="app-db.js"></script>
+<script src="script.js?v=2"></script>
+<script src="config.js?v=2"></script>
+<script src="app-db.js?v=2"></script>
 </body>
 </html>
